@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    data: classpath:/data.sql
+server:
+  port: 8080
+analyzer:
+  url: http://localhost:8081
+  name: analyzer

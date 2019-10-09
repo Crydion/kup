@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: //localhost:3306/blog
+    username: crydion
+    password: root
+  application:
+    name: blog
+server:
+  port: 8080
+analyzer:
+  url: http://localhost:8081
+  name: analyzer

@@ -1,0 +1,14 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/analyze",
+        "bodyPatterns": [ {
+        	"equalToJson":  {"content": "Gilipollas"}
+        } ]
+        
+    },
+    "response": {
+        "status": 200,
+        "body": "true"
+    }
+}

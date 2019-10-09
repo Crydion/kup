@@ -1,0 +1,14 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/analyze",
+        "bodyPatterns": [ {
+        	"equalToJson":  {"content": "Buenas"}
+        } ]
+        
+    },
+    "response": {
+        "status": 200,
+        "body": "false"
+    }
+}

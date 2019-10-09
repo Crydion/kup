@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "analyzer",
+  "type": "java.lang.Map",
+  "description": "Analyzer is the microservice in charge of analize all the words in the publications of the blog"
+}]}
