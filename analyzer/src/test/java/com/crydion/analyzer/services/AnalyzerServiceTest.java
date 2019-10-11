@@ -16,14 +16,14 @@ public class AnalyzerServiceTest {
 	public void hasSwearwordsFalseTest() {
 		ContentDTO contentDTO = new ContentDTO()
 			.setContent("Buenos días");
-		assertFalse(analyzerService.hasSwearwords(contentDTO));
+		assertFalse(analyzerService.hasSwearwords(contentDTO).hasSwearwords());
 	}
 
 	@Test
 	public void hasSwearwordsTrueTest() {
 		ContentDTO contentDTO = new ContentDTO()
 			.setContent("Gilipollas eres un completo idiota");
-		assertTrue(analyzerService.hasSwearwords(contentDTO));
+		assertTrue(analyzerService.hasSwearwords(contentDTO).hasSwearwords());
 	}
 
 }

@@ -12,12 +12,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.crydion.blog.entities.Post;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 public class PostDAOTest {
 
 	@Autowired
@@ -37,7 +40,11 @@ public class PostDAOTest {
 		Optional<Post> postOpt = postDAO.findById(id);
 
 		assertTrue(postOpt.isPresent());
-		checkData(postOpt.get());
+		Post post = postOpt.get();
+		assertEquals("Crydion", post.getAuthor());
+		assertEquals(353, post.getContent().length());
+		assertEquals(1, post.getComments().size());
+		assertEquals("Im lovin it", post.getComments().get(0).getContent());
 	}
 
 	@Test
@@ -46,17 +53,6 @@ public class PostDAOTest {
 
 		assertEquals(2, posts.size());
 		assertNull(posts.get(0).getContent());
-	}
-
-	private void checkData(Post post) {
-		if(post.getId()==1) {
-			assertEquals("Crydion", post.getAuthor());
-			assertEquals(353, post.getContent().length());
-			assertEquals(1, post.getComments().size());
-			assertEquals("Im lovin it", post.getComments().get(0).getContent());
-		} else {
-			throw new AssertionError("Post id not recognized");
-		}
 	}
 
 }

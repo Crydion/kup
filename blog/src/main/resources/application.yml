@@ -1,12 +1,10 @@
 spring:
-  datasource:
-    url: //localhost:3306/blog
-    username: crydion
-    password: root
+  jpa:    hibernate:      ddl-auto: update
   application:
-    name: blog
+    name: blog  datasource:
+    username: crydion    password: crydion
 server:
   port: 8080
 analyzer:
-  url: http://localhost:8081
-  name: analyzer
+  ribbon:
+    listOfServers: localhost:8081

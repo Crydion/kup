@@ -23,10 +23,10 @@ public class CommentMapperTest {
 	}
 
 	@Test
-	public void mapEntityWithCommentsTest() {
-		Comment entity = CommentTestUtils.generateRandomEntity();
+	public void mapDTOTest() {
+		CommentDTO dto = CommentTestUtils.generateRandomDTO();
 
-		CommentDTO dto = commentMapper.mapEntity(entity);
+		Comment entity = commentMapper.mapDTO(dto);
 
 		checkData(entity, dto);
 	}

@@ -11,7 +11,7 @@ import com.crydion.blog.entities.Post;
 @Repository
 public interface PostDAO extends JpaRepository<Post, Integer>{
 
-	@Query("SELECT new Post(id, publicationDate, author, title) FROM Post")
+	@Query("SELECT new Post(id, publicationDate, lastModified, author, title) FROM Post")
 	List<Post> getAllPostsSimplified();
 
 }

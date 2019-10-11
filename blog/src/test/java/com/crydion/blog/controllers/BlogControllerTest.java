@@ -14,21 +14,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.MethodMode;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.crydion.blog.dtos.CommentDTO;
 import com.crydion.blog.dtos.PostDTO;
-import com.crydion.blog.testutils.CommentTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @AutoConfigureWireMock(port = 8081)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BlogControllerTest {
 
 	@Autowired
@@ -87,7 +88,7 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+	@WithMockUser("Crydion")
 	public void savePostTest() throws Exception {
 		PostDTO postDTO = new PostDTO()
 			.setAuthor("Bea")
@@ -107,7 +108,7 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+	@WithMockUser("Crydion")
 	public void updatePostTest() throws Exception {
 		PostDTO postDTO = new PostDTO()
 			.setAuthor("Crydion")
@@ -135,11 +136,11 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+	@WithMockUser("Crydion")
 	public void addCommentTest() throws Exception {
-		CommentDTO commentDTO = CommentTestUtils.generateRandomDTO();
-		commentDTO.setId(null);
-		commentDTO.setPublicationDate(null);
+		CommentDTO commentDTO = new CommentDTO()
+				.setAuthor("Yo mismo")
+				.setContent("Buenas");
 		ResultActions result = mockMvc.perform(post("/posts/2/comments")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE).content(jsonObjectMapper.writeValueAsBytes(commentDTO)));
 
@@ -158,7 +159,22 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@DirtiesContext(methodMode = MethodMode.AFTER_METHOD)
+	@WithMockUser("Crydion")
+	public void addCommentNotValidTest() throws Exception {
+		CommentDTO commentDTO = new CommentDTO()
+				.setAuthor("Yo mismo")
+				.setContent("Gilipollas");
+		ResultActions result = mockMvc.perform(post("/posts/2/comments")
+				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE).content(jsonObjectMapper.writeValueAsBytes(commentDTO)));
+
+		result.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.status").value(400))
+			.andExpect(jsonPath("$.message").value("Swearwords are not allowed"))
+			.andExpect(jsonPath("$.code").isNotEmpty());
+	}
+
+	@Test
+	@WithMockUser("Crydion")
 	public void removePostTest() throws Exception {
 		ResultActions resultDelete = mockMvc.perform(delete("/posts/1"));
 

@@ -4,6 +4,6 @@ import com.crydion.analyzer.dtos.ContentDTO;
 
 public interface AnalyzerService {
 
-	boolean hasSwearwords(ContentDTO contentDTO);
+	ContentDTO hasSwearwords(ContentDTO contentDTO);
 
 }

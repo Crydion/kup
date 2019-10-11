@@ -17,45 +17,44 @@ import com.crydion.blog.dtos.CommentDTO;
 import com.crydion.blog.dtos.PostDTO;
 import com.crydion.blog.services.PostService;
 
-@RestController("/")
+@RestController
 public class BlogController {
 
 	private PostService postService;
 
 	@Autowired
 	public BlogController(PostService postService) {
-		super();
 		this.postService = postService;
 	}
 
-	@GetMapping("posts")
+	@GetMapping("/posts")
 	public List<PostDTO> getPosts() {
 		return postService.getPosts();
 	}
 
-	@GetMapping("posts/{id}")
+	@GetMapping("/posts/{id}")
 	public PostDTO getPost(@PathVariable Integer id) {
 		return postService.getPost(id);
 	}
 
-	@PostMapping("posts")
+	@PostMapping("/posts")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PostDTO savePost(@RequestBody PostDTO postDTO) {
 		return postService.savePost(postDTO);
 	}
 
-	@PutMapping("posts/{id}")
+	@PutMapping("/posts/{id}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public PostDTO updatePost(@PathVariable Integer id, @RequestBody PostDTO postDTO) {
 		return postService.updatePost(id, postDTO);
 	}
 
-	@DeleteMapping("posts/{id}")
+	@DeleteMapping("/posts/{id}")
 	public PostDTO removePost(@PathVariable Integer id) {
 		return postService.removePost(id);
 	}
 
-	@PostMapping("posts/{id}/comments")
+	@PostMapping("/posts/{id}/comments")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PostDTO saveComment(@PathVariable Integer id, @RequestBody CommentDTO commentDTO) {
 		return postService.addComment(id, commentDTO);

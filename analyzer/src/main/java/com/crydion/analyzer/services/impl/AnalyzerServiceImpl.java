@@ -20,11 +20,15 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	}
 
 	@Override
-	public boolean hasSwearwords(ContentDTO contentDTO) {
+	public ContentDTO hasSwearwords(ContentDTO contentDTO) {
 		String content = contentDTO.getContent().toLowerCase();
 
-		return SWEARWORDS.stream()
-			.anyMatch(content::contains);
+		contentDTO.setSwearwords(
+			SWEARWORDS.stream()
+				.anyMatch(content::contains)
+		);
+
+		return contentDTO;
 	}
 
 }

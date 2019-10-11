@@ -51,6 +51,15 @@ public class PostMapperTest {
 		checkData(entity, dto);
 	}
 
+	@Test
+	public void mapDTOTest() {
+		PostDTO dto = PostTestUtils.generateRandomDTO();
+
+		Post entity = postMapper.mapDTO(dto);
+
+		checkData(entity, dto);
+	}
+
 	private void checkData(Post entity, PostDTO dto) {
 		assertEquals(entity.getId(), dto.getId());
 		assertEquals(entity.getPublicationDate(), dto.getPublicationDate());

@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.crydion.blog.dtos.ContentDTO;
 
-@FeignClient("${analyzer.url}")
+@FeignClient("analyzer")
 public interface AnalyzerClient {
 
 	@PostMapping(path = "/analyze", consumes = "application/json")
-	boolean analyzeContent(ContentDTO contentDTO);
+	ContentDTO analyzeContent(ContentDTO contentDTO);
 
 }

@@ -9,6 +9,12 @@
     },
     "response": {
         "status": 200,
-        "body": "false"
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+        	"swearwords": false,
+        	"content": "Buenas"
+        }
     }
 }

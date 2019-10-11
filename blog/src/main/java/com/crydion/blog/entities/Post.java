@@ -34,15 +34,16 @@ public class Post {
 	@Column(length = 4000)
 	private String content;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="POST_ID")
 	private List<Comment> comments;
 
 	public Post() {}
 
-	public Post(Integer id, LocalDate publicationDate, String author, String title) {
+	public Post(Integer id, LocalDate publicationDate, LocalDate lastModified, String author, String title) {
 		this.id = id;
 		this.publicationDate = publicationDate;
+		this.lastModified = lastModified;
 		this.author = author;
 		this.title = title;
 	}

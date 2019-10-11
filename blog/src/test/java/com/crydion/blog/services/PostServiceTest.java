@@ -12,10 +12,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.crydion.blog.clients.AnalyzerClient;
 import com.crydion.blog.daos.PostDAO;
 import com.crydion.blog.dtos.CommentDTO;
+import com.crydion.blog.dtos.ContentDTO;
 import com.crydion.blog.dtos.PostDTO;
 import com.crydion.blog.exceptions.PostNotFoundException;
+import com.crydion.blog.exceptions.SwearwordException;
 import com.crydion.blog.mappers.CommentMapper;
 import com.crydion.blog.mappers.PostMapper;
 import com.crydion.blog.services.impl.PostServiceImpl;
@@ -34,11 +37,14 @@ public class PostServiceTest {
 	@Mock
 	private CommentMapper commentMapper;
 
+	@Mock
+	private AnalyzerClient analyzerClient;
+
 	private PostService postService;
 
 	@Before
 	public void setUp() {
-		postService = new PostServiceImpl(postDAO, postMapper, commentMapper);
+		postService = new PostServiceImpl(postDAO, postMapper, commentMapper, analyzerClient);
 
 		when(commentMapper.mapDTO(any())).thenReturn(CommentTestUtils.generateRandomEntity());
 		when(postMapper.mapEntity(any())).thenReturn(PostTestUtils.generateRandomDTO());
@@ -107,13 +113,25 @@ public class PostServiceTest {
 	}
 
 	@Test
-	public void addCommentTest() {
+	public void addCommentFalseTest() {
 		Integer id = 1;
 		CommentDTO dto = CommentTestUtils.generateRandomDTO();
 
+		when(analyzerClient.analyzeContent(any())).thenReturn(new ContentDTO().setSwearwords(false));
 		when(postDAO.findById(id)).thenReturn(Optional.of(PostTestUtils.generateRandomEntity()));
 
 		assertNotNull(postService.addComment(id, dto));
+	}
+
+	@Test(expected = SwearwordException.class)
+	public void addCommentTrueTest() {
+		Integer id = 1;
+		CommentDTO dto = CommentTestUtils.generateRandomDTO();
+
+		when(analyzerClient.analyzeContent(any())).thenReturn(new ContentDTO().setSwearwords(true));
+		when(postDAO.findById(id)).thenReturn(Optional.of(PostTestUtils.generateRandomEntity()));
+
+		postService.addComment(id, dto);
 	}
 
 }

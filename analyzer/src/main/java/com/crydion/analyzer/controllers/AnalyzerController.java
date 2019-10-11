@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.crydion.analyzer.dtos.ContentDTO;
 import com.crydion.analyzer.services.AnalyzerService;
 
-@RestController("/analyze")
+@RestController("/")
 public class AnalyzerController {
 
 	private AnalyzerService analyzerService;
@@ -19,8 +19,8 @@ public class AnalyzerController {
 		this.analyzerService = analyzerService;
 	}
 
-	@PostMapping("/")
-	public boolean analyzeContent(@RequestBody ContentDTO contentDTO) {
+	@PostMapping("analyze")
+	public ContentDTO analyzeContent(@RequestBody ContentDTO contentDTO) {
 		return analyzerService.hasSwearwords(contentDTO);
 	}
 
