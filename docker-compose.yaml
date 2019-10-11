@@ -1,0 +1,40 @@
+version: '2.1'
+
+services:
+  db:
+    container_name: db
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+      MYSQL_USER: crydion
+      MYSQL_PASSWORD: crydion
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  analyzer:
+    container_name: analyzer
+    image: munizva/analyzer
+
+  blog:
+    container_name: blog
+    image: munizva/blog
+    links: 
+      - "db"
+      - "analyzer"
+    environment:
+      SPRING_DATASOURCE_USERNAME: crydion
+      SPRING_DATASOURCE_PASSWORD: crydion
+      SPRING_DATASOURCE_URL: jdbc:mysql://db/blog
+      ANALYZER_RIBBON_LISTOFSERVERS: analyzer:8081
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
