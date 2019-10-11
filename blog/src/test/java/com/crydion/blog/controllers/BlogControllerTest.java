@@ -136,7 +136,6 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@WithMockUser("Crydion")
 	public void addCommentTest() throws Exception {
 		CommentDTO commentDTO = new CommentDTO()
 				.setAuthor("Yo mismo")
@@ -159,7 +158,6 @@ public class BlogControllerTest {
 	}
 
 	@Test
-	@WithMockUser("Crydion")
 	public void addCommentNotValidTest() throws Exception {
 		CommentDTO commentDTO = new CommentDTO()
 				.setAuthor("Yo mismo")
